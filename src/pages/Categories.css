@@ -1,0 +1,45 @@
+.categories {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .categories h2 {
+    font-size: 3em;
+    margin-bottom: 30px;
+  }
+  
+  .category-list {
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    /* justify-content: center; */
+    flex-wrap: wrap;
+    gap: 100px;
+  }
+  
+  .category-item {
+    width: 100px;
+    height:100px;
+
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .category-item img {
+    width: 150%;
+    height: 170%;
+    border-radius: 60%;
+    background-color:rgb(211, 213, 214);
+    box-shadow: 0 2px 8px rgba(9, 163, 224, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .category-item img:hover {
+    transform: scale(1.05);
+  }
+  
+  .category-item p {
+    /* margin-top: 10px; */
+    font-weight: 900;
+  }
+  

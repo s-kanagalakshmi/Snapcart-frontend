@@ -1,0 +1,23 @@
+.features {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-around;
+    padding: 40px 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+  }
+  
+  .feature {
+    flex: 1;
+    margin: 0 10px;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .feature svg {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+  
+  
