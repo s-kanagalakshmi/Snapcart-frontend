@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-const Electronics = () => {
+import { useNavigate } from 'react-router-dom';
+const CategoryPage = () => {
+  const { categoryName } = useParams();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/products')  // Fixed the extra slash
-      .then(response => {
-        setProducts(response.data);  // Set the fetched products data
-      })
-      .catch(error => {
-        console.error('Error fetching products:', error);  // Handle any errors
-      });
-  }, []);  // Empty dependency array means this runs once on component mount
+    axios.get(`http://localhost:5000/products/category/${categoryName}`)
+      .then(response => setProducts(response.data))
+      .catch(err => console.error('Axios error:', err));
+  }, [categoryName]);
+  const navigate = useNavigate();
 
+  const handleBuyNow = (productId) => {
+    navigate(`/product/${productId}`);
+  };
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Electronics</h2>
+      <h2>{categoryName.toUpperCase()}</h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {products.map(product => (
           <div
@@ -63,15 +65,17 @@ const Electronics = () => {
             <button
               style={{
                 marginTop: '10px',
-                backgroundColor: '#2196f3',
+                backgroundColor: '#4CAF50',
                 color: 'white',
                 border: 'none',
                 padding: '8px 16px',
                 borderRadius: '6px',
                 cursor: 'pointer'
               }}
+              onClick={() => handleBuyNow(product._id)}
+
             >
-              Add to Cart
+              Buy Now
             </button>
           </div>
         ))}
@@ -80,4 +84,4 @@ const Electronics = () => {
   );
 };
 
-export default Electronics;
+export default CategoryPage;
