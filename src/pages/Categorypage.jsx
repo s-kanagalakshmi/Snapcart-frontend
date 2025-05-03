@@ -8,9 +8,13 @@ const CategoryPage = () => {
 
   useEffect(() => {
     axios.get(`http://localhost:5000/products/category/${categoryName}`)
-      .then(response => setProducts(response.data))
+      .then(response => {
+        console.log(response);  // Check the response
+        setProducts(response.data);
+      })
       .catch(err => console.error('Axios error:', err));
   }, [categoryName]);
+  
   const navigate = useNavigate();
 
   const handleBuyNow = (productId) => {

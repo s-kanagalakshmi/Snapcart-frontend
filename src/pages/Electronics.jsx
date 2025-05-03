@@ -1,19 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { auth } from '../config';
 const Electronics = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/products')  // Fixed the extra slash
+    axios.get('http://localhost:5000/products')  
       .then(response => {
-        setProducts(response.data);  // Set the fetched products data
+        setProducts(response.data); 
       })
       .catch(error => {
-        console.error('Error fetching products:', error);  // Handle any errors
+        console.error('Error fetching products:', error);  
       });
   }, []);  // Empty dependency array means this runs once on component mount
-
+  const addToCart = async (product) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return navigate('/');
+      const token = await user.getIdToken();
+  
+      const res = await axios.post(
+        'http://localhost:5000/cart/save',
+        {
+          productId: product._id, // ✅ must match schema
+          quantity: 1             // optional if default is 1
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+  
+      console.log('Product added to cart:', res.data);
+    } catch (err) {
+      console.error('Cart save error:', err);
+    }
+  };
+  
+  
   return (
     <div style={{ padding: '20px' }}>
       <h2>Electronics</h2>
@@ -70,6 +95,8 @@ const Electronics = () => {
                 borderRadius: '6px',
                 cursor: 'pointer'
               }}
+              onClick={() => addToCart(product)}
+
             >
               Add to Cart
             </button>

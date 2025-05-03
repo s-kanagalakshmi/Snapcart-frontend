@@ -1,20 +1,55 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Auth.css';
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config';
+import { useNavigate } from 'react-router-dom';
+import './Signup.css';  // You can add custom styles for the signup page
 
 const Signup = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      alert("Signup successful ✅");
+      console.log(userCred.user);
+      navigate("/Home");  // Redirect to Home or another page after successful signup
+    } catch (error) {
+      alert("Signup error ❌");
+      console.error(error.message);
+    }
+  };
+
   return (
-    <div className="auth-container">
-      <div className="auth-form">
+    <div className="signup-container">
+      <div className="signup-form">
         <h2>Sign Up</h2>
-        <form>
-          <input type="text" placeholder="Full Name" required />
-          <input type="email" placeholder="Email" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Sign Up</button>
+        <form onSubmit={handleSignup}>
+          <div className="input-group">
+            <input 
+              type="email" 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              placeholder="Enter your email" 
+              required 
+            />
+          </div>
+          <div className="input-group">
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              placeholder="Enter your password" 
+              required 
+            />
+          </div>
+          <button type="submit" className="signup-button">Sign Up</button>
         </form>
-        <p className="auth-toggle">
-          Already have an account? <Link to="/login">Login</Link>
+        <p className="login-link">
+          Already have an account? 
+          <span onClick={() => navigate('/')} className="link">Log In</span>
         </p>
       </div>
     </div>

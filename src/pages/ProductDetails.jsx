@@ -1,20 +1,16 @@
+// src/pages/ProductDetails.jsx
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { auth } from '../config'; // your Firebase config file
 import axios from 'axios';
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [user, setUser] = useState({
-    _id: 'YOUR_USER_ID', // Replace this with actual user data or use context
-    name: 'Test User',
-    email: 'test@example.com',
-    phone: '9999999999'
-  });
 
   useEffect(() => {
     axios.get(`http://localhost:5000/products/${productId}`)
-      .then(response => setProduct(response.data))
+      .then(res => setProduct(res.data))
       .catch(err => console.error(err));
   }, [productId]);
 
@@ -28,20 +24,31 @@ const ProductDetails = () => {
     });
   };
 
+  
   const handleCheckout = async () => {
-    const res = await loadRazorpay('https://checkout.razorpay.com/v1/checkout.js');
-    if (!res) {
-      alert('Razorpay SDK failed to load.');
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please login to proceed.");
+      return;
+    }
+
+    const token = await user.getIdToken(); // 🔐 Get Firebase Auth token
+
+    const sdkLoaded = await loadRazorpay("https://checkout.razorpay.com/v1/checkout.js");
+    if (!sdkLoaded) {
+      alert("Failed to load Razorpay");
       return;
     }
 
     try {
-      const { data: order } = await axios.post('http://localhost:5000/api/payment/create-order', {
-        totalPrice: product.price
-      });
+      const { data: order } = await axios.post(
+        'http://localhost:5000/payment/create-order',
+        { totalPrice: product.price },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       const options = {
-        key: 'YOUR_KEY_ID', // Replace with your Razorpay key
+        key: 'rzp_test_nQFgORQudhpB3r',
         amount: order.amount,
         currency: order.currency,
         name: 'Snapcart',
@@ -49,17 +56,21 @@ const ProductDetails = () => {
         image: product.image,
         order_id: order.id,
         handler: async function (response) {
-          const verifyRes = await axios.post('http://localhost:5000/api/payment/verify', {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            userId: user._id,
-            orderItems: [{
-              product: product._id,
-              quantity: 1
-            }],
-            totalPrice: product.price
-          });
+          const verifyRes = await axios.post(
+            'http://localhost:5000/payment/verify',
+            {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              orderItems: [{
+                product: product._id,
+                name: product.name,
+                price: product.price,
+                qty: 1
+              }],              totalPrice: product.price
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
 
           if (verifyRes.data.success) {
             alert("✅ Payment successful and order saved!");
@@ -68,42 +79,31 @@ const ProductDetails = () => {
           }
         },
         prefill: {
-          name: user.name,
+          name: user.displayName || "Firebase User",
           email: user.email,
-          contact: user.phone
+          contact: "9999999999"
         },
         theme: {
-          color: '#f39c12'
+          color: "#f39c12"
         }
       };
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
-    } catch (error) {
-      console.error('Checkout error:', error);
+    } catch (err) {
+      console.error("Checkout error:", err);
     }
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p>Loading product...</p>;
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: 'auto' }}>
+    <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px' }}>
       <img src={product.image} alt={product.name} style={{ width: '100%', borderRadius: '12px' }} />
-      <h2 style={{ margin: '10px 0' }}>{product.name}</h2>
-      <p style={{ fontSize: '1.1rem', color: '#555' }}>{product.description}</p>
-      <p style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>₹{product.price}</p>
-      <button
-        onClick={handleCheckout}
-        style={{
-          backgroundColor: '#f39c12',
-          color: 'white',
-          border: 'none',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          marginTop: '10px'
-        }}
-      >
+      <h2>{product.name}</h2>
+      <p>{product.description}</p>
+      <p style={{ fontWeight: 'bold' }}>₹{product.price}</p>
+      <button onClick={handleCheckout} style={{ marginTop: '10px', backgroundColor: '#f39c12', color: '#fff', padding: '10px 20px', borderRadius: '8px' }}>
         Proceed to Checkout
       </button>
     </div>
