@@ -1,7 +1,9 @@
 import React from 'react';
 import './Deals.css';
-
+import { useNavigate } from 'react-router-dom';
+import Electronics from './Electronics';
 const Deals = () => {
+  const navigate=useNavigate()
   return (
     <section className="deals">
       <div className="deal-card red">
@@ -9,7 +11,7 @@ const Deals = () => {
           <h4>Holiday Deals</h4>
           <h2>Up to 30% off</h2>
           <p>Selected Smartphone Brands</p>
-          <button>Shop</button>
+          <button onClick={() => navigate('/electronics')}> Shop</button>
         </div>
         <img src="https://i.imgur.com/2nCt3Sbl.jpg" alt="Smartphone" />
       </div>
@@ -18,7 +20,7 @@ const Deals = () => {
           <h4>Just In</h4>
           <h2>Take Your Sound Anywhere</h2>
           <p>Top Headphone Brands</p>
-          <button>Shop</button>
+          <button onClick={() => navigate('/electronics')}> Shop</button>
         </div>
         <img src="https://i.imgur.com/8Km9tLL.png" alt="Headphones" />
       </div>

@@ -18,7 +18,6 @@ const Home = () => {
     return (
         <div style={{ padding: '40px' }}>
             <h1>Welcome to Snapcart</h1>
-            {user && <Navbar />} 
             <Hero />
             <Features />
             <Deals/>

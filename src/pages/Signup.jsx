@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';  // You can add custom styles for the signup page
-
+import { signOut } from 'firebase/auth';
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,9 +13,13 @@ const Signup = () => {
     e.preventDefault();
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      await signOut(auth);
+
+
       alert("Signup successful ✅");
+      navigate("/");  
+
       console.log(userCred.user);
-      navigate("/Home");  // Redirect to Home or another page after successful signup
     } catch (error) {
       alert("Signup error ❌");
       console.error(error.message);

@@ -2,32 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { auth } from '../config';
+import { useParams } from 'react-router-dom';
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     const fetchCart = async () => {
-//       try {
-//         const user =auth.currentUser;
-//         console.log(user,"cart")
-//         // if (!user) return navigate('/');
-//         const token = await user.getIdToken(); 
-// console.log(token,"token1")  
-//         const res = await axios.get('http://localhost:5000/cart', {
-//           headers: { Authorization: `Bearer ${token}` }
-//         }); 
-//         console.log(res.data,"res")
-//         setCartItems(res.data);
-//         calculateTotal(res.data);
-//       } catch (err) {
-//         console.error('Failed to load cart', err);
-//        }  
-//     };
-//     fetchCart();
-//   }, []); 
-useEffect(() => {
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
@@ -44,10 +26,10 @@ useEffect(() => {
         console.log('No user logged in');
       }
     });
-  
+
     return () => unsubscribe();
   }, []);
-  
+
   const calculateTotal = (items) => {
     const total = items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0);
     setTotalAmount(total);
@@ -100,40 +82,40 @@ useEffect(() => {
             { amount: totalAmount * 100 },
             { headers: { Authorization: `Bearer ${token}` } }
           );
-  
+
           const { id, amount } = res.data;
 
-      console.log(res,"ers")
-console.log(cartItems)
-const orderItems = cartItems.map(item => ({
-    product: item._id,
-    name: item.name,
-    price: item.price,
-    qty: item.quantity
-  }));
-  
+          console.log(res, "ers")
+          console.log(cartItems)
+          const orderItems = cartItems.map(item => ({
+            product: item._id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          }));
+
           const options = {
-            key:'rzp_test_nQFgORQudhpB3r',
+            key: 'rzp_test_nQFgORQudhpB3r',
             amount: amount * 100,
             currency: 'INR',
             name: 'Snapcart',
             description: 'Purchase Electronics',
             // image:cartItems.image,
             order_id: id,
-            handler:async function (response){
-                const verifyRes = await axios.post(
-                    'http://localhost:5000/payment/verify',
+            handler: async function (response) {
+              const verifyRes = await axios.post(
+                'http://localhost:5000/payment/verify-cart',
                 {
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature,
-                     orderItems,
-                      totalPrice: totalAmount
-                  },
-                  { headers: { Authorization:  `Bearer ${token}`  } }
-                );
-              console.log(verifyRes,"verify")
-  
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  orderItems,
+                  totalPrice: totalAmount
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
+              console.log(verifyRes, "verify")
+
               if (verifyRes.data.success) {
                 alert('Payment Successful ✅');
                 setCartItems([]);
@@ -143,7 +125,7 @@ const orderItems = cartItems.map(item => ({
             },
             theme: { color: '#3399cc' }
           };
-  
+
           const rzp = new window.Razorpay(options);
           rzp.open();
         } catch (error) {
@@ -155,7 +137,7 @@ const orderItems = cartItems.map(item => ({
       }
     });
   };
-  
+
 
   return (
     <div style={{ padding: '20px' }}>

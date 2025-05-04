@@ -1,32 +1,48 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom'; // ✅ No BrowserRouter here
+// import React, { useContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useContext } from 'react';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Navbar from './pages/Navbar';
 import Electronics from './pages/Electronics';
-import Categories from './pages/Categories';
 import CategoryPage from './pages/Categorypage';
-import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
-import { AuthProvider } from './pages/AuthContext';
 import Cart from './pages/Cart';
+import AuthContext from './pages/AuthContext';
+import ContactUs from './pages/Contact';
 function App() {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <>
-    <AuthProvider>
+      {/* Render Navbar only if the user is logged in */}
+      {user && <Navbar />}
+
       <Routes>
-        <Route path="/Home" element={<Home />} />
-        <Route path="/electronics" element={<Electronics />} />
+        {/* Public routes for login and signup */}
+        {!user && (
+          <>
+            <Route path="/" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </>
+        )}
 
-        <Route path="/category/:categoryName" element={<CategoryPage />} />
-        <Route path="/product/:productId" element={<ProductDetails />} />
-        <Route path="/cart" element={<Cart />} />
+        {/* Protected routes for authenticated users */}
+        {user && (
+          <>
+            <Route path="/home" element={<Home />} />
+            <Route path="/electronics" element={<Electronics />} />
+            <Route path="/category/:categoryName" element={<CategoryPage />} />
+            <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<ContactUs />} />
 
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+          </>
+        )}
       </Routes>
-      </AuthProvider>
     </>
   );
 }

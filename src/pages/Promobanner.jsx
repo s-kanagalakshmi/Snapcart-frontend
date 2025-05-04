@@ -1,7 +1,8 @@
 import React from 'react';
 import './PromoBanner.css';
-
+import { Navigate, useNavigate } from 'react-router-dom';
 const PromoBanner = () => {
+  const navigate=useNavigate()
   return (
     <section className="promo-banner">
       <div className="promo-image">
@@ -15,8 +16,8 @@ const PromoBanner = () => {
         <h2>Save up to <span>$150</span></h2>
         <p>on selected laptop & tablets brands</p>
         <small>Terms and conditions apply</small>
-        <button>Shop</button>
-      </div>
+        <button onClick={() => navigate('/electronics')}> Shop</button>
+        </div>
     </section>
   );
 };
