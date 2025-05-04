@@ -7,9 +7,9 @@ import { AuthProvider } from './pages/AuthContext';
 
 import { UserProvider } from './pages/UserContext';
 createRoot(document.getElementById('root')).render(
-     <BrowserRouter>
+  <BrowserRouter>
     <AuthProvider>
-        <App />
+      <App />
     </AuthProvider>
-    </BrowserRouter>
+  </BrowserRouter>
 )

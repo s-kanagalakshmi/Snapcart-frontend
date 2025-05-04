@@ -11,6 +11,7 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import AuthContext from './pages/AuthContext';
 import ContactUs from './pages/Contact';
+import HelpCenter from './pages/Helpcenter';
 function App() {
   const { user, loading } = useContext(AuthContext);
 
@@ -39,7 +40,7 @@ function App() {
             <Route path="/product/:productId" element={<ProductDetails />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/contact" element={<ContactUs />} />
-
+<Route path="/helpcenter" element={<HelpCenter/>}/>
           </>
         )}
       </Routes>

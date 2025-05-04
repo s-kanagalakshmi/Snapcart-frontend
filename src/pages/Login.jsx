@@ -15,7 +15,7 @@ const Login = () => {
     console.log(user,"checking")
     try {
       const res = await axios.post(
-        'http://localhost:5000/users/firebase-login',
+        'https://snapcart-backend-3sgl.onrender.com/users/firebase-login',
         {
           // uid: user.uid,
           // email: user.email,

@@ -7,7 +7,7 @@ const CategoryPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/products/category/${categoryName}`)
+    axios.get(`https://snapcart-backend-3sgl.onrender.com/products/category/${categoryName}`)
       .then(response => {
         console.log(response);  // Check the response
         setProducts(response.data);

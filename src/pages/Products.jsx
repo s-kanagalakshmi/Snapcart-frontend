@@ -9,7 +9,7 @@ const Products = () => {
   // Fetch data from backend API
   useEffect(() => {
     axios
-      .get('http://localhost:5000/products') // Adjust URL if needed (e.g., add your backend server address)
+      .get('https://snapcart-backend-3sgl.onrender.com/products') // Adjust URL if needed (e.g., add your backend server address)
       .then(response => {
         setProducts(response.data);
         console.log(response.data,"data") // Store data in state

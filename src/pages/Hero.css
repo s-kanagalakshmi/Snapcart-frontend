@@ -4,23 +4,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    /* color: white; */
     text-align: center;
   }
   
   .hero-content {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(218, 221, 8, 0.5);
     padding: 40px;
     border-radius: 10px;
   }
   
   .hero h1 {
+    color:black;
     font-size: 3em;
     margin-bottom: 20px;
   }
   
   .hero p {
     font-size: 1.2em;
+    color:black;
+
     margin-bottom: 30px;
   }
   

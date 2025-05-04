@@ -5,7 +5,7 @@ const Electronics = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/products')  
+    axios.get('https://snapcart-backend-3sgl.onrender.com/products')  
       .then(response => {
         setProducts(response.data); 
       })
@@ -20,7 +20,7 @@ const Electronics = () => {
       const token = await user.getIdToken();
   
       const res = await axios.post(
-        'http://localhost:5000/cart/save',
+        'https://snapcart-backend-3sgl.onrender.com/cart/save',
         {
           productId: product._id, // ✅ must match schema
           quantity: 1             // optional if default is 1

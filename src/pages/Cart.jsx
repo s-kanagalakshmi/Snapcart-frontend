@@ -14,7 +14,7 @@ const Cart = () => {
       if (user) {
         try {
           const token = await user.getIdToken();
-          const res = await axios.get('http://localhost:5000/cart', {
+          const res = await axios.get('https://snapcart-backend-3sgl.onrender.com/cart', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setCartItems(res.data);
@@ -41,7 +41,7 @@ const Cart = () => {
         try {
           const token = await user.getIdToken();
           const res = await axios.post(
-            'http://localhost:5000/cart/remove',
+            'https://snapcart-backend-3sgl.onrender.com/cart/remove',
             { productId },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -78,7 +78,7 @@ const Cart = () => {
           const token = await user.getIdToken();
           console.log(token)
           const res = await axios.post(
-            'http://localhost:5000/payment/checkout',
+            'https://snapcart-backend-3sgl.onrender.com/payment/checkout',
             { amount: totalAmount * 100 },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -104,7 +104,7 @@ const Cart = () => {
             order_id: id,
             handler: async function (response) {
               const verifyRes = await axios.post(
-                'http://localhost:5000/payment/verify-cart',
+                'https://snapcart-backend-3sgl.onrender.com/payment/verify-cart',
                 {
                   razorpay_order_id: response.razorpay_order_id,
                   razorpay_payment_id: response.razorpay_payment_id,

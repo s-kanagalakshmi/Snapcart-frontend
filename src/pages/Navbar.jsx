@@ -15,7 +15,7 @@ const Navbar = () => {
     const fetchOrders = async () => {
       if (user) {
         try {
-          const res = await axios.get(`http://localhost:5000/orders/${user.uid}`);
+          const res = await axios.get(`https://snapcart-backend-3sgl.onrender.com/orders/${user.uid}`);
           setOrders(res.data); // Axios returns data in res.data
           console.log(res.data)
         } catch (err) {

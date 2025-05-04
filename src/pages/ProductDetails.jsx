@@ -9,7 +9,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/products/${productId}`)
+    axios.get(`https://snapcart-backend-3sgl.onrender.com/products/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err));
   }, [productId]);
@@ -42,7 +42,7 @@ const ProductDetails = () => {
 
     try {
       const { data: order } = await axios.post(
-        'http://localhost:5000/payment/create-order',
+        'https://snapcart-backend-3sgl.onrender.com/payment/create-order',
         { totalPrice: product.price },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -57,7 +57,7 @@ const ProductDetails = () => {
         order_id: order.id,
         handler: async function (response) {
           const verifyRes = await axios.post(
-            'http://localhost:5000/payment/verify',
+            'https://snapcart-backend-3sgl.onrender.com/payment/verify',
             {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,

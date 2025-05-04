@@ -87,7 +87,6 @@ const ContactUs = () => {
               Reach us at
             </p>
             <p className="text-blk map-contactus-subhead">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis diam lectus sapien.
             </p>
             <div className="social-media-links mob">
               <a className="social-icon-link" href="#" id="ix94i-2-2">

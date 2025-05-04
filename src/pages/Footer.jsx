@@ -1,14 +1,15 @@
 import React from 'react';
 import './Footer.css';
-
+import { useNavigate } from 'react-router-dom';
 const Footer = () => {
+  const navigate=useNavigate()
   return (
     <footer className="footer">
       <div className="footer-help-banner">
         <div className="help-text">
           <h2>Need Help? Check Out Our Help Center</h2>
-          <p>I'm a paragraph. Click here to add your own text and edit me. Let your users get to know you.</p>
-          <button>Go to Help Center</button>
+          <p>Stuck on something? Don’t worry! Our Help Center is packed with all the info you need to get back on track. From order details to service queries, we’ve got the solutions you’re looking for—just a click away!</p>
+          <button onClick={() => navigate('/helpcenter')}> Go to Help Center</button>
         </div>
         <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="Help Desk" />
       </div>
@@ -16,9 +17,9 @@ const Footer = () => {
       <div className="footer-columns">
         <div className="footer-col">
           <h4>Store Location</h4>
-          <p>500 Terry Francine Street<br />San Francisco, CA 94158</p>
-          <p>info@mysite.com<br />123-456-7890</p>
-          <div className="social-icons">
+          <p>500 New Street<br />Chennai</p>
+          <p>info@snapcart.com<br />9999999999</p>
+          <div className="social-icons" style={{color:"blue"}}>
             <i className="fa fa-facebook"></i>
             <i className="fa fa-instagram"></i>
             <i className="fa fa-twitter"></i>

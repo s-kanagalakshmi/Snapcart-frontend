@@ -17,7 +17,6 @@ const Home = () => {
     const { user } = useContext(AuthContext); 
     return (
         <div style={{ padding: '40px' }}>
-            <h1>Welcome to Snapcart</h1>
             <Hero />
             <Features />
             <Deals/>
